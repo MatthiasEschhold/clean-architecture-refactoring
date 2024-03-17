@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity(name = "vehicle")
+@Entity(name = "vehicle_tbl")
 public class VehicleJpaEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class VehicleJpaEntity {
     private String licensePlate;
 
     @ElementCollection
-    @CollectionTable(name = "mileage_records")
+    @CollectionTable(name = "mileage_records_tbl")
     private List<MileageRecordJpaEntity> mileageRecords;
 
     public Long getId() {
