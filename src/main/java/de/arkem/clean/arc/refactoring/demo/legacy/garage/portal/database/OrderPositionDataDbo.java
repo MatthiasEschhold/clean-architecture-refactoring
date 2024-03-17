@@ -1,6 +1,7 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database;
 
 import jakarta.persistence.Embeddable;
+
 @Embeddable
 public class OrderPositionDataDbo {
 

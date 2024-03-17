@@ -2,15 +2,20 @@ package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller;
 
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 @Controller
 public class OrderDataController {
+    private static final Logger logger = LoggerFactory.getLogger(OrderDataController.class);
     private final OrderDataService orderDataService;
 
     public OrderDataController(OrderDataService orderDataService) {
@@ -27,7 +32,7 @@ public class OrderDataController {
     @GetMapping("/showOrderDetails/{id}")
     public String getOrderDetails(@PathVariable(value = "id") int orderNumber, Model model) {
         OrderDataDbo order = orderDataService.readOrder(orderNumber);
-        System.out.println("Order id: " + order.getId());
+        logger.info("Order data with order number found: " + orderNumber);
         model.addAttribute("order", order);
         return "orderDetails";
     }

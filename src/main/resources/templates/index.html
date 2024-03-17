@@ -12,9 +12,9 @@
 <div class="container my-2" align="center">
 
     <h3>Garage Order Overview</h3>
-    <a th:href="@{/createOrder}" class="btn btn-primary btn-sm mb-3" >Create Garage Order</a>
+    <a th:href="@{/createOrder}" class="btn btn-primary btn-sm mb-3">Create Garage Order</a>
     <table style="width:80%" border="1"
-           class = "table table-striped table-responsive-md">
+           class="table table-striped table-responsive-md">
         <thead>
         <tr>
             <th>OrderNumber</th>
@@ -37,8 +37,8 @@
             <td th:text="${order.customerName}"></td>
             <td th:text="${order.lastName}"></td>
             <td th:text="${order.creationDate}"></td>
-            <td> <a th:href="@{/showOrderDetails/{id}(id=${order.id})}"
-                    class="btn btn-primary">Show details</a>
+            <td><a th:href="@{/showOrderDetails/{id}(id=${order.id})}"
+                   class="btn btn-primary">Show details</a>
             </td>
 
             <!-- <td> <a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}"
