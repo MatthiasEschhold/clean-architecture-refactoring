@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
@@ -24,7 +26,7 @@ class GetVehicleByVinInteractorTest {
 
     @Test
     void shouldGetVehicleById() {
-        when(findVehicle.findByVin(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE))).thenReturn(VehicleTestDataFactory.createVehicle());
+        when(findVehicle.findByVin(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE))).thenReturn(Optional.of(VehicleTestDataFactory.createVehicle()));
         Vehicle vehicle = interactorUnderTest.get(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE));
         assertThat(vehicle.getVin().value(), is(VehicleTestDataFactory.VIN_TEST_VALUE));
     }

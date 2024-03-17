@@ -2,6 +2,7 @@ package de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.use
 
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.Vehicle;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.Vin;
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.exception.VehicleNotFoundException;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.in.GetVehicleByVin;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.FindVehicle;
 
@@ -15,6 +16,6 @@ public class GetVehicleByVinInteractor implements GetVehicleByVin {
 
     @Override
     public Vehicle get(Vin vin) {
-        return findVehicle.findByVin(vin);
+        return findVehicle.findByVin(vin).orElseThrow(() -> new VehicleNotFoundException(vin));
     }
 }

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.when;
 
@@ -33,9 +35,9 @@ class UpdateMileageInteractorTest {
         Vin vin = new Vin(VIN_TEST_VALUE);
         LicensePlate licensePlate = new LicensePlate(LICENSE_PLATE_TEST_VALUE);
         Vehicle vehicle = Vehicle.createNewVehicle(vin, licensePlate, new Mileage(MILEAGE_TEST_VALUE));
-        when(findVehicle.findByVin(vin)).thenReturn(vehicle);
+        when(findVehicle.findByVin(vin)).thenReturn(Optional.of(vehicle));
         when(saveVehicle.save(vehicle)).thenReturn(vehicle);
-        when(findVehicle.findByVin(vin)).thenReturn(vehicle);
+        when(findVehicle.findByVin(vin)).thenReturn(Optional.of(vehicle));
         when(saveVehicle.save(vehicle)).thenReturn(vehicle);
         assertDoesNotThrow(() -> updateMileageInteractor.update(vin, new Mileage(2000)));
     }

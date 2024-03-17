@@ -75,4 +75,14 @@ public class Vehicle {
         vehicle.mileageRecords.add(new MileageRecord(mileage, new RecordDate(LocalDateTime.now())));
         return vehicle;
     }
+
+    public static Vehicle createVehicleWithMileageRecords(Vin vin, LicensePlate licensePlate, List<MileageRecord> mileageRecords) {
+        Vehicle vehicle = new Vehicle(vin, licensePlate);
+        if(mileageRecords != null) {
+            vehicle.mileageRecords = mileageRecords;
+        } else {
+            throw new IllegalArgumentException("mileage records are not valid");
+        }
+        return vehicle;
+    }
 }
