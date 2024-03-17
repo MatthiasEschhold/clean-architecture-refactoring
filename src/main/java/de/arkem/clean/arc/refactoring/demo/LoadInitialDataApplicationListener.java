@@ -1,8 +1,9 @@
 package de.arkem.clean.arc.refactoring.demo;
 
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.CreateOrderRequest;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.OrderResourceToDboMapper;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataCrudRepository;
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class LoadInitialDataApplicationListener implements ApplicationListener<A
     private OrderDataCrudRepository orderDataRepository;
     @Autowired
     private OrderDataService orderDataService;
+    @Autowired
+    private OrderResourceToDboMapper orderResourceToDboMapper;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -32,18 +35,18 @@ public class LoadInitialDataApplicationListener implements ApplicationListener<A
     }
 
     private void initApplicationTestData() {
-        List<OrderDataDbo> orders = new ArrayList<>();
+        List<OrderResource> orders = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             CreateOrderRequest createOrderRequest = new CreateOrderRequest();
             createOrderRequest.setOrderData(createOrder(i));
             createOrderRequest.setCustomerId("1234" + i);
-            orderDataService.createOrder(createOrderRequest);
+            orderDataService.createOrder(orderResourceToDboMapper.mapResourceToDbo(createOrderRequest.getOrderData()), createOrderRequest.getCustomerId());
         }
         logger.info("Initial order data created");
     }
 
-    private OrderDataDbo createOrder(int valueExtension) {
-        OrderDataDbo order = new OrderDataDbo();
+    private OrderResource createOrder(int valueExtension) {
+        OrderResource order = new OrderResource();
         order.setOrderNumber(LocalDate.now() + "-" + valueExtension);
         order.setMileage(123 + valueExtension);
         order.setCreationDate(LocalDate.now());

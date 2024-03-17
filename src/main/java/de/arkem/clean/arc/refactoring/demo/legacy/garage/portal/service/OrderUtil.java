@@ -1,5 +1,6 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
 
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderPositionResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
 
 import java.util.UUID;

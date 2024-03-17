@@ -1,21 +1,10 @@
-package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database;
+package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
-public class OrderPositionDataDbo {
+public class OrderPositionResource {
 
     private String positionId;
     private String positionDescription;
     private double quantity;
-
-    public OrderPositionDataDbo(String positionId, String positionDescription, double quantity) {
-        this.positionId = positionId;
-        this.positionDescription = positionDescription;
-        this.quantity = quantity;
-    }
-    public OrderPositionDataDbo() {
-    }
 
     public String getPositionId() {
         return positionId;

@@ -1,6 +1,6 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.CreateOrderRequest;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDboAccessor;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
@@ -19,9 +19,8 @@ public class OrderDataService {
         this.orderDataDboAccessor = orderDataDboAccessor;
     }
 
-    public OrderDataDbo createOrder(CreateOrderRequest createOrderRequest) {
-        CustomerResponse response = getCustomer(createOrderRequest.getCustomerId());
-        OrderDataDbo orderDataDbo = createOrderRequest.getOrderData();
+    public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, String customerId) {
+        CustomerResponse response = getCustomer(customerId);
         if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
             throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
         }
@@ -39,7 +38,7 @@ public class OrderDataService {
         orderDataDbo.setStartDate(LocalDate.now().plusDays(1));
         orderDataDbo.setEndDate(LocalDate.now().plusDays(3));
         orderDataDbo.setCreationDate(LocalDate.now());
-        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + createOrderRequest.getCustomerId());
+        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + customerId);
         handleOrderPositions(orderDataDbo);
         return orderDataDboAccessor.saveOrder(orderDataDbo);
     }

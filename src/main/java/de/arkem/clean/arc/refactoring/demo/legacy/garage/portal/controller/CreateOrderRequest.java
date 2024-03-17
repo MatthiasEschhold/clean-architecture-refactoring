@@ -1,16 +1,16 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 
 public class CreateOrderRequest {
-    private OrderDataDbo orderData;
+    private OrderResource orderData;
     private String customerId;
 
-    public OrderDataDbo getOrderData() {
+    public OrderResource getOrderData() {
         return orderData;
     }
 
-    public void setOrderData(OrderDataDbo orderData) {
+    public void setOrderData(OrderResource orderData) {
         this.orderData = orderData;
     }
 
