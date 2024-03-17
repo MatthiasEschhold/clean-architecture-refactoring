@@ -6,6 +6,7 @@ import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDa
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 @Component
 public class OrderResourceToDboMapper {
@@ -21,9 +22,13 @@ public class OrderResourceToDboMapper {
         dbo.setCreationDate(resource.getCreationDate());
         dbo.setStartDate(resource.getStartDate());
         dbo.setEndDate(resource.getEndDate());
-        dbo.setOrderPositionDataDboList(resource.getOrderPositionResources().stream()
-                .map(r -> new OrderPositionDataDbo(r.getPositionId(), r.getPositionDescription(), r.getQuantity()))
-                .collect(Collectors.toList()));
+        if(resource.getOrderPositionResources() != null) {
+            dbo.setOrderPositionDataDboList(resource.getOrderPositionResources().stream()
+                    .map(r -> new OrderPositionDataDbo(r.getPositionId(), r.getPositionDescription(), r.getQuantity()))
+                    .collect(Collectors.toList()));
+        } else {
+            dbo.setOrderPositionDataDboList(new ArrayList<>());
+        }
         return dbo;
     }
 
@@ -38,14 +43,18 @@ public class OrderResourceToDboMapper {
         resource.setCreationDate(dbo.getCreationDate());
         resource.setStartDate(dbo.getStartDate());
         resource.setEndDate(dbo.getEndDate());
-        resource.setOrderPositionResources(dbo.getOrderPositionDataDboList().stream()
-                .map(d -> {
-                    OrderPositionResource r = new OrderPositionResource();
-                    r.setPositionDescription(d.getPositionDescription());
-                    r.setQuantity(d.getQuantity());
-                    return r;
-                })
-                .collect(Collectors.toList()));
+        if(dbo.getOrderPositionDataDboList() != null) {
+            resource.setOrderPositionResources(dbo.getOrderPositionDataDboList().stream()
+                    .map(d -> {
+                        OrderPositionResource r = new OrderPositionResource();
+                        r.setPositionDescription(d.getPositionDescription());
+                        r.setQuantity(d.getQuantity());
+                        return r;
+                    })
+                    .collect(Collectors.toList()));
+        } else {
+            resource.setOrderPositionResources(new ArrayList<>());
+        }
         return resource;
     }
 }

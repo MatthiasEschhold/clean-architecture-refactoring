@@ -5,7 +5,9 @@ import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.doma
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.exception.VehicleNotFoundException;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.in.GetVehicleByVin;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.FindVehicle;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GetVehicleByVinInteractor implements GetVehicleByVin {
 
     private final FindVehicle findVehicle;

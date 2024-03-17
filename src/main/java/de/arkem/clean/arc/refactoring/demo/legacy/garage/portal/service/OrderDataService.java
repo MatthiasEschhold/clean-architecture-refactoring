@@ -21,15 +21,19 @@ public class OrderDataService {
 
     public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, String customerId) {
         CustomerResponse response = getCustomer(customerId);
-        if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
-            throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
-        }
-        if (orderDataDbo.getLicensePlate() != null && !OrderUtil.validateLicensePlate(orderDataDbo.getLicensePlate())) {
-            throw new RuntimeException("Order creation not possible, license plate not valid");
-        }
-        if (orderDataDbo.getVehicleId() != null && !OrderUtil.isVehicleIdValid(orderDataDbo.getLicensePlate())) {
-            throw new RuntimeException("Order creation not possible, vehicle id not valid");
-        }
+        /**
+         * not neccessary anymore: validate in the rich domain model of vehicle
+         *
+            if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
+                throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
+            }
+            if (orderDataDbo.getLicensePlate() != null && !OrderUtil.validateLicensePlate(orderDataDbo.getLicensePlate())) {
+                throw new RuntimeException("Order creation not possible, license plate not valid");
+            }
+            if (orderDataDbo.getVehicleId() != null && !OrderUtil.isVehicleIdValid(orderDataDbo.getLicensePlate())) {
+                throw new RuntimeException("Order creation not possible, vehicle id not valid");
+            }
+         */
         OrderUtil.validatePostalCode(response.getPostalCode());
         orderDataDbo.setCustomerName(response.getCustomerName());
         orderDataDbo.setLastName(response.getCustomerLastName());

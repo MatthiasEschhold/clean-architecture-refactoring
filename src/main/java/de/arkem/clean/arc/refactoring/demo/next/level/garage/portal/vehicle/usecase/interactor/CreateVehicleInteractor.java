@@ -6,7 +6,9 @@ import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.doma
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.mileage.record.Mileage;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.in.CreateVehicle;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.SaveVehicle;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CreateVehicleInteractor implements CreateVehicle {
     private final SaveVehicle saveVehicle;
 

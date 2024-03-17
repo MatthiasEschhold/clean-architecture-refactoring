@@ -7,9 +7,11 @@ import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.doma
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.in.UpdateMileage;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.FindVehicle;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.SaveVehicle;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class UpdateMileageInteractor implements UpdateMileage {
 
     private final SaveVehicle saveVehicle;
