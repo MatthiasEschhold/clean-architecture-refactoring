@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 public class Vehicle {
     private final Vin vin;
     private final LicensePlate licensePlate;
     private List<MileageRecord> mileageRecords;
+
     private Vehicle(Vin vin, LicensePlate licensePlate) {
         this.vin = vin;
         this.licensePlate = licensePlate;
     }
+
     public void updateMileage(Mileage mileage) {
         if (mileage != null && isNewMileageHigherThanThePreviousMileage(mileage)) {
             RecordDate recordDate = new RecordDate(LocalDateTime.now());
@@ -25,6 +28,7 @@ public class Vehicle {
             throw new IllegalArgumentException("mileage is not valid");
         }
     }
+
     public Optional<Mileage> findLatestMileage() {
         MileageRecord latestMileageRecord = mileageRecords.stream()
                 .max(Comparator.comparing(mileageRecord -> mileageRecord.recordDate().value()))
