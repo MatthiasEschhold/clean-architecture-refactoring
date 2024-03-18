@@ -10,12 +10,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 public class Vehicle {
-    private final Vin vin;
-    private final LicensePlate licensePlate;
+    private Vin vin;
+    private LicensePlate licensePlate;
     private List<MileageRecord> mileageRecords;
-    private Vehicle(Vin vin, LicensePlate licensePlate) {
-        this.vin = vin;
-        this.licensePlate = licensePlate;
+    public static Vehicle createNewVehicle(Vin vin, LicensePlate licensePlate, Mileage mileage) {
+        if (vin == null || licensePlate == null || mileage == null) {
+            throw new IllegalArgumentException("vehicle data are not valid");
+        }
+        Vehicle vehicle = new Vehicle();
+        vehicle.vin = vin;
+        vehicle.licensePlate = licensePlate;
+        vehicle.mileageRecords = new ArrayList<>();
+        vehicle.mileageRecords.add(new MileageRecord(mileage, new RecordDate(LocalDateTime.now())));
+        return vehicle;
     }
     public void updateMileage(Mileage mileage) {
         if (mileage != null && isNewMileageHigherThanThePreviousMileage(mileage)) {
@@ -59,16 +66,5 @@ public class Vehicle {
         return false;
     }
 
-    private void validateMandatoryData(Vin vin, LicensePlate licensePlate, Mileage mileage) {
-        if (vin == null || licensePlate == null || mileage == null) {
-            throw new IllegalArgumentException("vehicle is not valid");
-        }
-    }
-
-    public static Vehicle createNewVehicle(Vin vin, LicensePlate licensePlate, Mileage mileage) {
-        Vehicle vehicle = new Vehicle(vin, licensePlate);
-        vehicle.mileageRecords = new ArrayList<>();
-        vehicle.mileageRecords.add(new MileageRecord(mileage, new RecordDate(LocalDateTime.now())));
-        return vehicle;
-    }
+    private Vehicle() {}
 }
