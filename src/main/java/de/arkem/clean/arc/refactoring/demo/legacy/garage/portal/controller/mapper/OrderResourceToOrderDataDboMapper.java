@@ -19,6 +19,7 @@ public class OrderResourceToOrderDataDboMapper {
         dbo.setCreationDate(resource.getCreationDate());
         dbo.setStartDate(resource.getStartDate());
         dbo.setEndDate(resource.getEndDate());
+        dbo.setVehicleId(resource.getVehicleId());
         if(resource.getOrderPositionResources() != null) {
             dbo.setOrderPositionDataDboList(resource.getOrderPositionResources().stream()
                     .map(r -> new OrderPositionDataDbo(r.getPositionId(), r.getPositionDescription(), r.getQuantity()))
@@ -40,6 +41,7 @@ public class OrderResourceToOrderDataDboMapper {
         resource.setCreationDate(dbo.getCreationDate());
         resource.setStartDate(dbo.getStartDate());
         resource.setEndDate(dbo.getEndDate());
+        resource.setVehicleId(dbo.getVehicleId());
         if(dbo.getOrderPositionDataDboList() != null) {
             resource.setOrderPositionResources(dbo.getOrderPositionDataDboList().stream()
                     .map(d -> {

@@ -6,7 +6,7 @@ public record Vin(String value) {
 
     public Vin {
         if (value == null || !value.matches(VIN_PATTERN)) {
-            throw new IllegalArgumentException("vin is not valid");
+            throw new IllegalArgumentException(String.format("vin %s is not valid", value));
         }
     }
 }
