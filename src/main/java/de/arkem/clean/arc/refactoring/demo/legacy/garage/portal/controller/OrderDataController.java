@@ -27,7 +27,8 @@ public class OrderDataController {
     private final CreateVehicle  createVehicle;
     private final GetVehicleByVin getVehicleByVin;
     private final OrderResourceToDboMapper mapper;
-    public OrderDataController(OrderDataService orderDataService, CreateVehicle createVehicle, GetVehicleByVin getVehicleByVin, OrderResourceToDboMapper mapper) {
+    public OrderDataController(OrderDataService orderDataService, CreateVehicle createVehicle,
+                               GetVehicleByVin getVehicleByVin, OrderResourceToDboMapper mapper) {
         this.orderDataService = orderDataService;
         this.createVehicle = createVehicle;
         this.getVehicleByVin = getVehicleByVin;

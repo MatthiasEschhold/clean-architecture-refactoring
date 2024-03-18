@@ -10,7 +10,8 @@ public class VehicleSaveRepository implements SaveVehicle {
     private final VehicleJpaRepository vehicleJpaRepository;
     private final VehicleToVehicleJpaEntityMapper vehicleToVehicleJpaEntityMapper;
 
-    public VehicleSaveRepository(VehicleJpaRepository vehicleJpaRepository, VehicleToVehicleJpaEntityMapper vehicleToVehicleJpaEntityMapper) {
+    public VehicleSaveRepository(VehicleJpaRepository vehicleJpaRepository,
+                                 VehicleToVehicleJpaEntityMapper vehicleToVehicleJpaEntityMapper) {
         this.vehicleJpaRepository = vehicleJpaRepository;
         this.vehicleToVehicleJpaEntityMapper = vehicleToVehicleJpaEntityMapper;
     }
