@@ -14,6 +14,7 @@ public class OrderResource {
     private String lastName;
     private String street;
     private String postalCode;
+    private String city;
     private LocalDate creationDate;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -130,5 +131,13 @@ public class OrderResource {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

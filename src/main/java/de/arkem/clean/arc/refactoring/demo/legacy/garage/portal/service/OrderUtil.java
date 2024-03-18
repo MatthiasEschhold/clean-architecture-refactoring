@@ -28,8 +28,8 @@ public class OrderUtil {
         }
     }
 
-    public static void validateCustomerId(String customerId) {
-        if (customerId.contains("*")) {
+    public static void validateCustomerId(int customerId) {
+        if (customerId < 0) {
             throw new IllegalArgumentException("orderNumber is not valids");
         }
     }

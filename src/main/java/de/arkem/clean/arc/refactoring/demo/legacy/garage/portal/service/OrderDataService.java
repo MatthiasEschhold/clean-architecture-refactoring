@@ -1,6 +1,5 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDboAccessor;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
@@ -19,7 +18,7 @@ public class OrderDataService {
         this.orderDataDboAccessor = orderDataDboAccessor;
     }
 
-    public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, String customerId) {
+    public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, int customerId) {
         CustomerResponse response = getCustomer(customerId);
         /**
          * not neccessary anymore: validate in the rich domain model of vehicle
@@ -55,18 +54,15 @@ public class OrderDataService {
         }
     }
 
-    private CustomerResponse getCustomer(String customerId) {
-        if (customerId == null) {
-            throw new RuntimeException("Order creation not possible, customer id required");
-        }
-        CustomerResponse customerResponse = customerService.getCustomer(customerId);
+    private CustomerResponse getCustomer(int customerId) {
+           CustomerResponse customerResponse = customerService.getCustomer(customerId);
         if (customerResponse == null) {
             throw new RuntimeException("Order creation not possible, customer not found");
         }
         return customerResponse;
     }
 
-    public OrderDataDbo updateOrder(int orderNumber, String customerId, OrderPositionDataDbo... orderPositions) {
+    public OrderDataDbo updateOrder(int orderNumber, int customerId, OrderPositionDataDbo... orderPositions) {
         OrderDataDbo order = null;
         CustomerResponse customerResponse = customerService.getCustomer(customerId);
         try {

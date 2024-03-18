@@ -1,7 +1,7 @@
 package de.arkem.clean.arc.refactoring.demo;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.CreateOrderRequest;
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.OrderResourceToDboMapper;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.CreateOrderRequest;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.mapper.OrderResourceToOrderDataDboMapper;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataCrudRepository;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
@@ -26,7 +26,7 @@ public class LoadInitialDataApplicationListener implements ApplicationListener<A
     @Autowired
     private OrderDataService orderDataService;
     @Autowired
-    private OrderResourceToDboMapper orderResourceToDboMapper;
+    private OrderResourceToOrderDataDboMapper orderResourceToOrderDataDboMapper;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -39,8 +39,8 @@ public class LoadInitialDataApplicationListener implements ApplicationListener<A
         for (int i = 0; i < 10; i++) {
             CreateOrderRequest createOrderRequest = new CreateOrderRequest();
             createOrderRequest.setOrderData(createOrder(i));
-            createOrderRequest.setCustomerId("1234" + i);
-            orderDataService.createOrder(orderResourceToDboMapper.mapResourceToDbo(createOrderRequest.getOrderData()), createOrderRequest.getCustomerId());
+            createOrderRequest.setCustomerId(1234 + i);
+            orderDataService.createOrder(orderResourceToOrderDataDboMapper.mapResourceToDbo(createOrderRequest.getOrderData()), createOrderRequest.getCustomerId());
         }
         logger.info("Initial order data created");
     }

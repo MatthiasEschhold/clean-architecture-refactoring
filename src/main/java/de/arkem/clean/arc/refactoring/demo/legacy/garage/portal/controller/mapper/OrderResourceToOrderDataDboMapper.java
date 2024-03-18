@@ -1,24 +1,21 @@
-package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller;
+package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.mapper;
 
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderPositionResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 @Component
-public class OrderResourceToDboMapper {
+public class OrderResourceToOrderDataDboMapper {
 
     public OrderDataDbo mapResourceToDbo(OrderResource resource) {
         OrderDataDbo dbo = new OrderDataDbo();
         dbo.setOrderNumber(resource.getOrderNumber());
         dbo.setEditorId(resource.getEditorId());
-        dbo.setCustomerName(resource.getCustomerName());
-        dbo.setLastName(resource.getLastName());
-        dbo.setStreet(resource.getStreet());
-        dbo.setPostalCode(resource.getPostalCode());
         dbo.setCreationDate(resource.getCreationDate());
         dbo.setStartDate(resource.getStartDate());
         dbo.setEndDate(resource.getEndDate());

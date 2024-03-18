@@ -15,7 +15,7 @@ public class CustomerService {
         customerClient = new RestTemplate();
     }
 
-    public CustomerResponse getCustomer(String customerId) {
+    public CustomerResponse getCustomer(int customerId) {
         OrderUtil.validateCustomerId(customerId);
         //CustomerResponse response = customerClient.getForObject(CUSTOMER_SERVICE_URL, CustomerResponse.class);   // Call customer service to get customer name
         CustomerResponse response = createCustomerResponse();

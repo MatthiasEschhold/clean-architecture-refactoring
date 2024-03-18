@@ -1,10 +1,10 @@
-package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller;
+package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource;
 
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 
 public class CreateOrderRequest {
     private OrderResource orderData;
-    private String customerId;
+    private int customerId;
 
     public OrderResource getOrderData() {
         return orderData;
@@ -14,11 +14,11 @@ public class CreateOrderRequest {
         this.orderData = orderData;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 }
