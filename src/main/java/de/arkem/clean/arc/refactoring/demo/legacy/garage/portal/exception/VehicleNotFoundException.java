@@ -1,4 +1,4 @@
-package de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.exception;
+package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.exception;
 
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.Vin;
 

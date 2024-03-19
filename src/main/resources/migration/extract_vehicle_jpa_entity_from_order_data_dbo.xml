@@ -1,4 +1,4 @@
-<changeSet id="extract-vehicle-from-order" author="your_name">
+<changeSet id="extract-vehicle-from-order" author="mes">
     <sql>
         INSERT INTO vehicle_tbl (vin, license_plate)
         SELECT vehicleId, licensePlate FROM legacy.garage.portal.order;
