@@ -52,14 +52,14 @@ public class OrderDataController {
     @GetMapping("/")
     public String getAllOrders(Model model) {
         List<OrderResource> orders = orderDataService.getAllOrders().stream().map(orderMapper::mapDboToResource).collect(toList());
-        orders.forEach(o -> this.enrichWithVehicle(o, getVehicleByVin.get(new Vin(o.getVehicleId()))));
+        orders.forEach(o -> this.enrichWithVehicle(o, getVehicleByVin.get(new Vin(o.getVehicleId())).get()));
         model.addAttribute("orderList", orders);
         return "index";
     }
     @GetMapping("/showOrderDetails/{id}")
     public String getOrderDetails(@PathVariable(value = "id") int orderNumber, Model model) {
         OrderResource order = orderMapper.mapDboToResource(orderDataService.readOrder(orderNumber));
-        enrichWithVehicle(order, getVehicleByVin.get(new Vin(order.getVehicleId())));
+        enrichWithVehicle(order, getVehicleByVin.get(new Vin(order.getVehicleId())).get());
         logger.info("Order data with order number found: " + orderNumber);
         model.addAttribute("order", order);
         return "orderDetails";
@@ -74,11 +74,19 @@ public class OrderDataController {
         Vehicle vehicle = createOrGetVehicle(orderRequest);
         Customer customer = createOrGetCustomer(orderRequest);
         OrderResource orderData = orderMapper.mapDboToResource(
-                orderDataService.createOrder(orderMapper.mapResourceToDbo(orderRequest.getOrderData()), orderRequest.getCustomerId())
+                orderDataService.createOrder(orderMapper.mapResourceToDbo(
+                        orderRequest.getOrderData()),
+                        orderRequest.getCustomerId())
         );
         enrichWithVehicle(orderData, vehicle);
         enrichResourceWithCustomer(orderData, customer);
         return "redirect:/showOrderDetails/" + orderData.getId();
+    }
+    private Vehicle createOrGetVehicle(CreateOrderRequest orderRequest) {
+        return getVehicleByVin.get(new Vin(orderRequest.getOrderData().getVehicleId()))
+                .orElse(createVehicle.create(new Vin(orderRequest.getOrderData().getVehicleId()),
+                        new LicensePlate(orderRequest.getOrderData().getLicensePlate()),
+                        new Mileage(orderRequest.getOrderData().getId())));
     }
 
     private Customer createOrGetCustomer(CreateOrderRequest orderRequest) {
@@ -90,15 +98,6 @@ public class OrderDataController {
         }
     }
 
-    private Vehicle createOrGetVehicle(CreateOrderRequest orderRequest) {
-        try {
-            return getVehicleByVin.get(new Vin(orderRequest.getOrderData().getVehicleId()));
-        } catch (Exception e) {
-            return createVehicle.create(new Vin(orderRequest.getOrderData().getVehicleId()),
-                    new LicensePlate(orderRequest.getOrderData().getLicensePlate()),
-                    new Mileage(orderRequest.getOrderData().getId()));
-        }
-    }
 
     private void enrichWithVehicle(OrderResource order, Vehicle vehicle) {
         order.setMileage(vehicle.findLatestMileage().orElse(new Mileage(0.0)).value());

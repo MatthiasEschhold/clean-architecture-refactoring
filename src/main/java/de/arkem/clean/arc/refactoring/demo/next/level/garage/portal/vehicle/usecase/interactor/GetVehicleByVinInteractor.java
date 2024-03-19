@@ -7,6 +7,8 @@ import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usec
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.usecase.out.FindVehicle;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class GetVehicleByVinInteractor implements GetVehicleByVin {
 
@@ -17,7 +19,7 @@ public class GetVehicleByVinInteractor implements GetVehicleByVin {
     }
 
     @Override
-    public Vehicle get(Vin vin) {
-        return findVehicle.findByVin(vin).orElseThrow(() -> new VehicleNotFoundException(vin));
+    public Optional<Vehicle> get(Vin vin) {
+        return findVehicle.findByVin(vin);
     }
 }

@@ -3,6 +3,8 @@ package de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.use
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.Vehicle;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.vehicle.domain.model.Vin;
 
+import java.util.Optional;
+
 public interface GetVehicleByVin {
-    Vehicle get(Vin vin);
+    Optional<Vehicle> get(Vin vin);
 }

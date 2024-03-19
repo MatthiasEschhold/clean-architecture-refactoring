@@ -27,7 +27,7 @@ class GetVehicleByVinInteractorTest {
     @Test
     void shouldGetVehicleById() {
         when(findVehicle.findByVin(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE))).thenReturn(Optional.of(VehicleTestDataFactory.createVehicle()));
-        Vehicle vehicle = interactorUnderTest.get(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE));
+        Vehicle vehicle = interactorUnderTest.get(new Vin(VehicleTestDataFactory.VIN_TEST_VALUE)).get();
         assertThat(vehicle.getVin().value(), is(VehicleTestDataFactory.VIN_TEST_VALUE));
     }
 }
