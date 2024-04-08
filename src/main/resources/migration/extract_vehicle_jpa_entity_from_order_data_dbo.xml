@@ -1,6 +1,8 @@
 <changeSet id="extract-vehicle-from-order" author="your_name">
     <sql>
-        INSERT INTO vehicle_tbl (vin, license_plate)
-        SELECT vehicleId, licensePlate FROM legacy.garage.portal.order;
+        INSERT INTO vehicle_tbl (vin, license_plate, mileage)
+        SELECT vehicleId, licensePlate, mileage FROM order_data_tbl;
     </sql>
 </changeSet>
+
+

@@ -34,10 +34,6 @@ public class OrderResourceToOrderDataDboMapper {
         OrderResource resource = new OrderResource();
         resource.setOrderNumber(dbo.getOrderNumber());
         resource.setEditorId(dbo.getEditorId());
-        resource.setCustomerName(dbo.getCustomerName());
-        resource.setLastName(dbo.getLastName());
-        resource.setStreet(dbo.getStreet());
-        resource.setPostalCode(dbo.getPostalCode());
         resource.setCreationDate(dbo.getCreationDate());
         resource.setStartDate(dbo.getStartDate());
         resource.setEndDate(dbo.getEndDate());

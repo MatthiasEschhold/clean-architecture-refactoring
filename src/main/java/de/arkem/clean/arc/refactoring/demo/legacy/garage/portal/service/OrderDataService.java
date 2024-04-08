@@ -12,81 +12,13 @@ import java.util.stream.Collectors;
 @Service
 public class OrderDataService {
     private OrderDataDboAccessor orderDataDboAccessor;
-    private CustomerService customerService = new CustomerService();
+
+    //rearc
+    //eliminate the direct dependency to customer
+    //private CustomerService customerService = new CustomerService();
 
     public OrderDataService(OrderDataDboAccessor orderDataDboAccessor) {
         this.orderDataDboAccessor = orderDataDboAccessor;
-    }
-
-    public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, int customerId) {
-        CustomerResponse response = getCustomer(customerId);
-        /**
-         * not neccessary anymore: validate in the rich domain model of vehicle
-         *
-            if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
-                throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
-            }
-            if (orderDataDbo.getLicensePlate() != null && !OrderUtil.validateLicensePlate(orderDataDbo.getLicensePlate())) {
-                throw new RuntimeException("Order creation not possible, license plate not valid");
-            }
-            if (orderDataDbo.getVehicleId() != null && !OrderUtil.isVehicleIdValid(orderDataDbo.getLicensePlate())) {
-                throw new RuntimeException("Order creation not possible, vehicle id not valid");
-            }
-         */
-        OrderUtil.validatePostalCode(response.getPostalCode());
-        orderDataDbo.setCustomerName(response.getCustomerName());
-        orderDataDbo.setLastName(response.getCustomerLastName());
-        orderDataDbo.setStreet(response.getStreet());
-        orderDataDbo.setPostalCode(response.getPostalCode());
-        orderDataDbo.setStartDate(LocalDate.now().plusDays(1));
-        orderDataDbo.setEndDate(LocalDate.now().plusDays(3));
-        orderDataDbo.setCreationDate(LocalDate.now());
-        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + customerId);
-        handleOrderPositions(orderDataDbo);
-        return orderDataDboAccessor.saveOrder(orderDataDbo);
-    }
-
-    private void handleOrderPositions(OrderDataDbo orderDataDbo) {
-        if (orderDataDbo.getOrderPositionDataDboList() != null && !orderDataDbo.getOrderPositionDataDboList().isEmpty()) {
-            orderDataDbo.setOrderPositionDataDboList(orderDataDbo.getOrderPositionDataDboList().stream()
-                    .map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
-                    .collect(Collectors.toList()));
-        }
-    }
-
-    private CustomerResponse getCustomer(int customerId) {
-           CustomerResponse customerResponse = customerService.getCustomer(customerId);
-        if (customerResponse == null) {
-            throw new RuntimeException("Order creation not possible, customer not found");
-        }
-        return customerResponse;
-    }
-
-    public OrderDataDbo updateOrder(int orderNumber, int customerId, OrderPositionDataDbo... orderPositions) {
-        OrderDataDbo order = null;
-        CustomerResponse customerResponse = customerService.getCustomer(customerId);
-        try {
-            order = readOrder(orderNumber);
-            if (customerResponse != null) {
-                order.setCustomerName(customerResponse.getCustomerName());
-                order.setLastName(customerResponse.getCustomerLastName());
-                order.setStreet(customerResponse.getStreet());
-                OrderUtil.validatePostalCode(customerResponse.getPostalCode());
-                order.setPostalCode(customerResponse.getPostalCode());
-            }
-            if (orderPositions != null) {
-                order.setOrderPositionDataDboList(List.of(orderPositions).stream().map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
-                        .collect(Collectors.toList()));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Order update not possible, order not found");
-        }
-        try {
-            orderDataDboAccessor.saveOrder(order);
-        } catch (Exception e) {
-            throw new RuntimeException("Order update not possible, database error");
-        }
-        return order;
     }
 
     public OrderDataDbo readOrder(int orderNumber) {
@@ -99,5 +31,65 @@ public class OrderDataService {
 
     public List<OrderDataDbo> getAllOrders() {
         return orderDataDboAccessor.findOrders();
+    }
+
+    public OrderDataDbo createOrder(OrderDataDbo orderDataDbo, int customerId) {
+        //rearc
+        //eliminate the direct dependency to customer
+        //CustomerResponse response = getCustomer(customerId);
+        //OrderUtil.validatePostalCode(response.getPostalCode());
+
+        //rearc
+        //build back vehicle
+        orderDataDbo.setVehicleId(orderDataDbo.getVehicleId());
+
+        //rearc
+        //build back customer
+        orderDataDbo.setCustomerId(customerId);
+
+        orderDataDbo.setStartDate(LocalDate.now().plusDays(1));
+        orderDataDbo.setEndDate(LocalDate.now().plusDays(3));
+        orderDataDbo.setCreationDate(LocalDate.now());
+        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + customerId);
+        handleOrderPositions(orderDataDbo);
+        return orderDataDboAccessor.saveOrder(orderDataDbo);
+    }
+
+    private void handleOrderPositions(OrderDataDbo orderDataDbo) {
+        if (orderDataDbo.getOrderPositionDataDboList() != null && !orderDataDbo.getOrderPositionDataDboList().isEmpty()) {
+            orderDataDbo.setOrderPositionDataDboList(orderDataDbo.getOrderPositionDataDboList().stream()
+                    .map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
+                     .collect(Collectors.toList()));
+        }
+    }
+    public OrderDataDbo updateOrder(int orderNumber, int customerId, OrderPositionDataDbo... orderPositions) {
+        //rearc
+        //eliminate the direct dependency to customer
+        //CustomerResponse customerResponse = customerService.getCustomer(customerId);
+        OrderDataDbo order = readOrder(orderNumber);
+        if (order.getCustomerId() != customerId) {
+            //order.setCustomerName(customerResponse.getCustomerName());
+            //order.setLastName(customerResponse.getCustomerLastName());
+            //order.setStreet(customerResponse.getStreet());
+            //OrderUtil.validatePostalCode(customerResponse.getPostalCode());
+            //order.setPostalCode(customerResponse.getPostalCode());
+            throw new RuntimeException("Order update not possible, customer IDs are not matching");
+        }
+        if (orderPositions != null) {
+            order.setOrderPositionDataDboList(List.of(orderPositions)
+                    .stream()
+                    .map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
+                    .collect(Collectors.toList()));
+        }
+        saveOrder(order);
+        return order;
+    }
+
+    private void saveOrder(OrderDataDbo order) {
+        try {
+            orderDataDboAccessor.saveOrder(order);
+        } catch (Exception e) {
+            throw new RuntimeException("Order update not possible, database error");
+        }
     }
 }

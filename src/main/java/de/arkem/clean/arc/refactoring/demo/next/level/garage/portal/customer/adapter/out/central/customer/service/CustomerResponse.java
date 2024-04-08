@@ -1,6 +1,8 @@
-package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
+package de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.adapter.out.central.customer.service;
 
 public class CustomerResponse {
+
+    private int id;
     private String customerName;
     private String customerLastName;
     private String street;
@@ -45,5 +47,13 @@ public class CustomerResponse {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

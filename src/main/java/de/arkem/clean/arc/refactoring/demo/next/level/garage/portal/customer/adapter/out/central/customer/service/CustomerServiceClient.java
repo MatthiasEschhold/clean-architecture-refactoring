@@ -1,25 +1,38 @@
-package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
+package de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.adapter.out.central.customer.service;
 
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.Customer;
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.CustomerId;
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.usecase.out.FetchCustomer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class CustomerService {
+//rearc
+//service will be refactored to an adapter
+@Component
+public class CustomerServiceClient implements FetchCustomer {
 
     private final static String CUSTOMER_SERVICE_URL = "http://customer-service:8080";
     private RestTemplate customerClient;
 
-    public CustomerService() {
+    public CustomerServiceClient() {
         customerClient = new RestTemplate();
     }
 
+    @Override
+    public Customer fetch(CustomerId customerId) {
+        return null;
+    }
+
     public CustomerResponse getCustomer(int customerId) {
-        OrderUtil.validateCustomerId(customerId);
-        //CustomerResponse response = customerClient.getForObject(CUSTOMER_SERVICE_URL, CustomerResponse.class);   // Call customer service to get customer name
-        CustomerResponse response = createCustomerResponse();
-        OrderUtil.validateCustomerResponse(response);
+        //rearc
+        //OrderUtil.validateCustomerId(customerId);
+        CustomerResponse response = customerClient.getForObject(CUSTOMER_SERVICE_URL, CustomerResponse.class);   // Call customer service to get customer name
+        //CustomerResponse response = createCustomerResponse();
+        //OrderUtil.validateCustomerResponse(response);
         return response;
     }
 

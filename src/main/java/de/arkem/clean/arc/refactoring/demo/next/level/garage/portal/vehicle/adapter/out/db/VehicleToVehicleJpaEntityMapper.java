@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-class VehicleToVehicleJpaEntityMapper {
+public class VehicleToVehicleJpaEntityMapper {
     public Vehicle mapToVehicle(VehicleJpaEntity jpaEntity)    {
         List<MileageRecord> mileageRecords = jpaEntity.getMileageRecords().stream()
                 .map(entity -> new MileageRecord(new Mileage(entity.getMileage()), new RecordDate(entity.getLocalDateTime())))

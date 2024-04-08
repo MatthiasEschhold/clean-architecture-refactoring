@@ -34,6 +34,8 @@ public class OrderDataController {
     private final OrderDataService orderDataService;
     private final CreateVehicle  createVehicle;
     private final GetVehicleByVin getVehicleByVin;
+
+    //rearc-practice: use case input ports to solve module dependencies
     private CreateCustomer createCustomer;
     private GetCustomer getCustomer;
     private final OrderResourceToOrderDataDboMapper orderMapper;
@@ -71,13 +73,21 @@ public class OrderDataController {
     }
     @PostMapping("/createOrder")
     public String createNewOrder(@ModelAttribute("orderRequest") CreateOrderRequest orderRequest) {
+        //rearc-dependency: when a vehicle exists then get the data else create it
         Vehicle vehicle = createOrGetVehicle(orderRequest);
+        //rearch-dependency: when a customer exists then get the data else create it
         Customer customer = createOrGetCustomer(orderRequest);
+        //rearc-practices: introduce ports & adapters pattern to decouple data model and resource model
+        //perform the origin business logic
+        //only possible based on decoupling between resource and database model
+        //due to this we have to introduce the resource in order as part of vehicle and customer rearchitecting
         OrderResource orderData = orderMapper.mapDboToResource(
                 orderDataService.createOrder(orderMapper.mapResourceToDbo(
                         orderRequest.getOrderData()),
                         orderRequest.getCustomerId())
         );
+        //rearc-practice:
+        //stability for consumers (when possible) for iterative rearchitecting
         enrichWithVehicle(orderData, vehicle);
         enrichResourceWithCustomer(orderData, customer);
         return "redirect:/showOrderDetails/" + orderData.getId();
@@ -98,19 +108,12 @@ public class OrderDataController {
         }
     }
 
-
+    //rearc-practice: enrichment of the origin order is implemented based on a mapping
+    //mapping is a element of the ports & adapters pattern
     private void enrichWithVehicle(OrderResource order, Vehicle vehicle) {
         order.setMileage(vehicle.findLatestMileage().orElse(new Mileage(0.0)).value());
         order.setLicensePlate(vehicle.getLicensePlate().value());
     }
-
-    private void enrichDboWithCustomer(OrderDataDbo dbo, Customer customer) {
-        dbo.setCustomerName(customer.getName().firstname());
-        dbo.setLastName(customer.getName().lastname());
-        dbo.setStreet(customer.getAddressList().get(0).street());
-        dbo.setPostalCode(customer.getAddressList().get(0).street());
-    }
-
     private void enrichResourceWithCustomer(OrderResource resource, Customer customer) {
         resource.setCustomerName(customer.getName().firstname());
         resource.setLastName(customer.getName().lastname());

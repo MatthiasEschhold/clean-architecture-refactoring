@@ -1,19 +1,26 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderPositionResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
+import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.adapter.out.central.customer.service.CustomerResponse;
 
 import java.util.UUID;
 
 public class OrderUtil {
-    public static boolean validateLicensePlate(String lp) {
-        return true;
-    }
 
-    public static boolean isVehicleIdValid(String id) {
+    //rearc
+    //eliminate and move to new vehicle domain model
+    /*public static boolean validateLicensePlate(String lp) {
         return true;
-    }
+    }*/
 
+    //rearc
+    //eliminate and move to new vehicle domain model
+    /*public static boolean isVehicleIdValid(String id) {
+        return true;
+    }*/
+
+    //rearc
+    //change to a factory pattern implementation
     public static OrderPositionDataDbo createOrderPositionDataDbo(String description, double quantity) {
         OrderPositionDataDbo orderPositionDataDbo = new OrderPositionDataDbo();
         orderPositionDataDbo.setPositionId(UUID.randomUUID().toString());
@@ -22,24 +29,25 @@ public class OrderUtil {
         return orderPositionDataDbo;
     }
 
-    public static void validatePostalCode(String postalCode) {
+    //rearc
+    //eliminate and move to new customer domain model
+    /*public static void validatePostalCode(String postalCode) {
         if (postalCode.length() != 5) {
             throw new IllegalArgumentException("Postal code must be 5 characters long");
         }
-    }
+    }*/
 
-    public static void validateCustomerId(int customerId) {
+    //rearc
+    //eliminate and move to new customer domain model
+    /*public static void validateCustomerId(int customerId) {
         if (customerId < 0) {
             throw new IllegalArgumentException("orderNumber is not valids");
         }
-    }
+    }*/
 
-    /**
-     * @refactoring: technical debt due to unclear responsibilities
-     * historically only the first needed customer properties were validated,
-     * the others are forgotten
-     */
-    public static void validateCustomerResponse(CustomerResponse response) {
+    //rearc
+    //eliminate and move to new customer domain model
+    /*public static void validateCustomerResponse(CustomerResponse response) {
         if (response == null) {
             throw new IllegalArgumentException("Customer response should not be null");
         }
@@ -49,7 +57,7 @@ public class OrderUtil {
                 || response.getCustomerLastName() == null
                 || response.getCustomerLastName().isEmpty()
                 || response.getCustomerLastName().isBlank()) {
-            throw new IllegalArgumentException("Customer name should not be emptym, blank or null");
+            throw new IllegalArgumentException("Customer name should not be empty, blank or null");
         }
-    }
+    }*/
 }
