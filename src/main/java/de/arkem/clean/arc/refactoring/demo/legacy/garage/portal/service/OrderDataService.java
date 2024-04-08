@@ -4,30 +4,31 @@ import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.Creat
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDboAccessor;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class OrderDataService {
     private OrderDataDboAccessor orderDataDboAccessor;
     private CustomerService customerService = new CustomerService();
+
     public OrderDataService(OrderDataDboAccessor orderDataDboAccessor) {
         this.orderDataDboAccessor = orderDataDboAccessor;
     }
+
     public OrderDataDbo createOrder(CreateOrderRequest createOrderRequest) {
         CustomerResponse response = getCustomer(createOrderRequest.getCustomerId());
         OrderDataDbo orderDataDbo = createOrderRequest.getOrderData();
-        if(orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
+        if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
             throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
         }
-        if(orderDataDbo.getLicensePlate() != null && !OrderUtil.validateLicensePlate(orderDataDbo.getLicensePlate())) {
+        if (orderDataDbo.getLicensePlate() != null && !OrderUtil.validateLicensePlate(orderDataDbo.getLicensePlate())) {
             throw new RuntimeException("Order creation not possible, license plate not valid");
         }
-        if(orderDataDbo.getVehicleId() != null && !OrderUtil.isVehicleIdValid(orderDataDbo.getLicensePlate())) {
+        if (orderDataDbo.getVehicleId() != null && !OrderUtil.isVehicleIdValid(orderDataDbo.getLicensePlate())) {
             throw new RuntimeException("Order creation not possible, vehicle id not valid");
         }
         OrderUtil.validatePostalCode(response.getPostalCode());
@@ -44,7 +45,7 @@ public class OrderDataService {
     }
 
     private void handleOrderPositions(OrderDataDbo orderDataDbo) {
-        if(orderDataDbo.getOrderPositionDataDboList() != null && !orderDataDbo.getOrderPositionDataDboList().isEmpty()) {
+        if (orderDataDbo.getOrderPositionDataDboList() != null && !orderDataDbo.getOrderPositionDataDboList().isEmpty()) {
             orderDataDbo.setOrderPositionDataDboList(orderDataDbo.getOrderPositionDataDboList().stream()
                     .map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
                     .collect(Collectors.toList()));
@@ -52,11 +53,11 @@ public class OrderDataService {
     }
 
     private CustomerResponse getCustomer(String customerId) {
-        if(customerId == null) {
+        if (customerId == null) {
             throw new RuntimeException("Order creation not possible, customer id required");
         }
         CustomerResponse customerResponse = customerService.getCustomer(customerId);
-        if(customerResponse == null) {
+        if (customerResponse == null) {
             throw new RuntimeException("Order creation not possible, customer not found");
         }
         return customerResponse;
@@ -67,14 +68,14 @@ public class OrderDataService {
         CustomerResponse customerResponse = customerService.getCustomer(customerId);
         try {
             order = readOrder(orderNumber);
-            if(customerResponse != null) {
+            if (customerResponse != null) {
                 order.setCustomerName(customerResponse.getCustomerName());
                 order.setLastName(customerResponse.getCustomerLastName());
                 order.setStreet(customerResponse.getStreet());
                 OrderUtil.validatePostalCode(customerResponse.getPostalCode());
                 order.setPostalCode(customerResponse.getPostalCode());
             }
-            if(orderPositions != null) {
+            if (orderPositions != null) {
                 order.setOrderPositionDataDboList(List.of(orderPositions).stream().map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
                         .collect(Collectors.toList()));
             }
@@ -91,7 +92,7 @@ public class OrderDataService {
 
     public OrderDataDbo readOrder(int orderNumber) {
         OrderDataDbo order = orderDataDboAccessor.findOrder(orderNumber);
-        if(order == null) {
+        if (order == null) {
             throw new RuntimeException("Order not found");
         }
         return order;

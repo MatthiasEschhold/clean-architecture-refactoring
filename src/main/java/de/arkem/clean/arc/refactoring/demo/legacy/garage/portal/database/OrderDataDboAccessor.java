@@ -11,6 +11,7 @@ public class OrderDataDboAccessor {
     public OrderDataDboAccessor(OrderDataCrudRepository orderCrudRepository) {
         this.orderCrudRepository = orderCrudRepository;
     }
+
     public OrderDataDbo findOrder(int id) {
         return orderCrudRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
     }
