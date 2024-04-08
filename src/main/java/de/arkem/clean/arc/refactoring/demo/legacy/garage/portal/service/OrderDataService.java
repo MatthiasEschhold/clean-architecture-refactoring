@@ -59,9 +59,10 @@ public class OrderDataService {
         if (orderDataDbo.getOrderPositionDataDboList() != null && !orderDataDbo.getOrderPositionDataDboList().isEmpty()) {
             orderDataDbo.setOrderPositionDataDboList(orderDataDbo.getOrderPositionDataDboList().stream()
                     .map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
-                     .collect(Collectors.toList()));
+                    .collect(Collectors.toList()));
         }
     }
+
     public OrderDataDbo updateOrder(int orderNumber, int customerId, OrderPositionDataDbo... orderPositions) {
         //rearc
         //eliminate the direct dependency to customer

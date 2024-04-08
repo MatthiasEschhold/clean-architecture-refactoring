@@ -24,12 +24,15 @@ public class OrderDataDbo {
     @ElementCollection
     @CollectionTable(name = "order_positions")
     private List<OrderPositionDataDbo> orderPositionDataDboList;
+
     public int getCustomerId() {
         return customerId;
     }
+
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
+
     public String getOrderNumber() {
         return orderNumber;
     }
@@ -37,6 +40,7 @@ public class OrderDataDbo {
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
+
     public LocalDate getCreationDate() {
         return creationDate;
     }

@@ -1,4 +1,5 @@
 Feature: a vehicle can be created
+
   Scenario: client makes call to the use case CreateVehicle.create
     Given vehicle data vehicle identification number, license plate and mileage
     When the service manager submits data for a new vehicle

@@ -14,6 +14,7 @@ public class OrderPositionDataDbo {
         this.positionDescription = positionDescription;
         this.quantity = quantity;
     }
+
     public OrderPositionDataDbo() {
     }
 

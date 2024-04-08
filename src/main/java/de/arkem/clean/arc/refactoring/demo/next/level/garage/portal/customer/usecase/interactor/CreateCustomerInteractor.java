@@ -12,14 +12,16 @@ import org.springframework.stereotype.Component;
 public class CreateCustomerInteractor implements CreateCustomer {
     private final SaveCustomer saveCustomer;
     private final FetchCustomer fetchCustomer;
+
     public CreateCustomerInteractor(SaveCustomer saveCustomer, FetchCustomer fetchCustomer) {
         this.saveCustomer = saveCustomer;
         this.fetchCustomer = fetchCustomer;
     }
+
     @Override
     public Customer create(CreateCustomerCommand command) {
         Customer customer = fetchCustomer.fetch(new CustomerId(command.customerId()));
-        if(customer != null) {
+        if (customer != null) {
             customer.addPaymentMethod(new PaymentMethod(command.paymentMethod(), command.paymentIdentifier()));
             return saveCustomer.save(customer);
         } else {

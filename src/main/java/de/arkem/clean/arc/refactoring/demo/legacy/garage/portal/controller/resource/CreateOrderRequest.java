@@ -1,7 +1,5 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
-
 public class CreateOrderRequest {
     private OrderResource orderData;
     private int customerId;

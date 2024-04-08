@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class VehicleToVehicleJpaEntityMapper {
-    public Vehicle mapToVehicle(VehicleJpaEntity jpaEntity)    {
+    public Vehicle mapToVehicle(VehicleJpaEntity jpaEntity) {
         List<MileageRecord> mileageRecords = jpaEntity.getMileageRecords().stream()
                 .map(entity -> new MileageRecord(new Mileage(entity.getMileage()), new RecordDate(entity.getLocalDateTime())))
                 .collect(Collectors.toList());
         return Vehicle.createVehicleWithMileageRecords(new Vin(jpaEntity.getVin()),
-                new LicensePlate(jpaEntity.getLicensePlate()),mileageRecords);
+                new LicensePlate(jpaEntity.getLicensePlate()), mileageRecords);
     }
 
     public VehicleJpaEntity mapToVehicleJpaEntity(Vehicle vehicle) {

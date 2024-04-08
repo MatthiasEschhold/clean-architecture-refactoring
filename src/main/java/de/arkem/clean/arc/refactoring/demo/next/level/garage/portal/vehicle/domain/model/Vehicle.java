@@ -78,7 +78,7 @@ public class Vehicle {
 
     public static Vehicle createVehicleWithMileageRecords(Vin vin, LicensePlate licensePlate, List<MileageRecord> mileageRecords) {
         Vehicle vehicle = new Vehicle(vin, licensePlate);
-        if(mileageRecords != null) {
+        if (mileageRecords != null) {
             vehicle.mileageRecords = mileageRecords;
         } else {
             throw new IllegalArgumentException("mileage records are not valid");

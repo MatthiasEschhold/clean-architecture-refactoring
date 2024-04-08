@@ -4,7 +4,6 @@ import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.mappe
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.mapper.OrderResourceToOrderDataDboMapper;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.CreateOrderRequest;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.Customer;
 import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.CustomerId;
@@ -28,11 +27,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+
 @Controller
 public class OrderDataController {
     private static final Logger logger = LoggerFactory.getLogger(OrderDataController.class);
     private final OrderDataService orderDataService;
-    private final CreateVehicle  createVehicle;
+    private final CreateVehicle createVehicle;
     private final GetVehicleByVin getVehicleByVin;
 
     //rearc-practice: use case input ports to solve module dependencies
@@ -58,6 +58,7 @@ public class OrderDataController {
         model.addAttribute("orderList", orders);
         return "index";
     }
+
     @GetMapping("/showOrderDetails/{id}")
     public String getOrderDetails(@PathVariable(value = "id") int orderNumber, Model model) {
         OrderResource order = orderMapper.mapDboToResource(orderDataService.readOrder(orderNumber));
@@ -66,11 +67,13 @@ public class OrderDataController {
         model.addAttribute("order", order);
         return "orderDetails";
     }
+
     @GetMapping("/createOrder")
     public String createOrder(Model model) {
         model.addAttribute("orderRequest", new CreateOrderRequest());
         return "/createNewOrderForm";
     }
+
     @PostMapping("/createOrder")
     public String createNewOrder(@ModelAttribute("orderRequest") CreateOrderRequest orderRequest) {
         //rearc-dependency: when a vehicle exists then get the data else create it
@@ -83,7 +86,7 @@ public class OrderDataController {
         //due to this we have to introduce the resource in order as part of vehicle and customer rearchitecting
         OrderResource orderData = orderMapper.mapDboToResource(
                 orderDataService.createOrder(orderMapper.mapResourceToDbo(
-                        orderRequest.getOrderData()),
+                                orderRequest.getOrderData()),
                         orderRequest.getCustomerId())
         );
         //rearc-practice:
@@ -92,6 +95,7 @@ public class OrderDataController {
         enrichResourceWithCustomer(orderData, customer);
         return "redirect:/showOrderDetails/" + orderData.getId();
     }
+
     private Vehicle createOrGetVehicle(CreateOrderRequest orderRequest) {
         return getVehicleByVin.get(new Vin(orderRequest.getOrderData().getVehicleId()))
                 .orElse(createVehicle.create(new Vin(orderRequest.getOrderData().getVehicleId()),
@@ -114,6 +118,7 @@ public class OrderDataController {
         order.setMileage(vehicle.findLatestMileage().orElse(new Mileage(0.0)).value());
         order.setLicensePlate(vehicle.getLicensePlate().value());
     }
+
     private void enrichResourceWithCustomer(OrderResource resource, Customer customer) {
         resource.setCustomerName(customer.getName().firstname());
         resource.setLastName(customer.getName().lastname());

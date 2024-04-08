@@ -42,7 +42,7 @@ class CustomerToJpaEntityMapper {
                         .stream()
                         .map(paymentMethodJpaEntity ->
                                 new PaymentMethod(PaymentMethodEnum.valueOf(paymentMethodJpaEntity.getPaymentMethod()),
-                        paymentMethodJpaEntity.getIdentifier()))
+                                        paymentMethodJpaEntity.getIdentifier()))
                         .toList());
     }
 }

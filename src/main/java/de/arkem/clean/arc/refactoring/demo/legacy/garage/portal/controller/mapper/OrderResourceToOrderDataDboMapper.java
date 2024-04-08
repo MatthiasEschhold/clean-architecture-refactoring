@@ -4,11 +4,11 @@ import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resou
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.resource.OrderResource;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
-import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.domain.model.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
 @Component
 public class OrderResourceToOrderDataDboMapper {
 
@@ -20,7 +20,7 @@ public class OrderResourceToOrderDataDboMapper {
         dbo.setStartDate(resource.getStartDate());
         dbo.setEndDate(resource.getEndDate());
         dbo.setVehicleId(resource.getVehicleId());
-        if(resource.getOrderPositionResources() != null) {
+        if (resource.getOrderPositionResources() != null) {
             dbo.setOrderPositionDataDboList(resource.getOrderPositionResources().stream()
                     .map(r -> new OrderPositionDataDbo(r.getPositionId(), r.getPositionDescription(), r.getQuantity()))
                     .collect(Collectors.toList()));
@@ -38,7 +38,7 @@ public class OrderResourceToOrderDataDboMapper {
         resource.setStartDate(dbo.getStartDate());
         resource.setEndDate(dbo.getEndDate());
         resource.setVehicleId(dbo.getVehicleId());
-        if(dbo.getOrderPositionDataDboList() != null) {
+        if (dbo.getOrderPositionDataDboList() != null) {
             resource.setOrderPositionResources(dbo.getOrderPositionDataDboList().stream()
                     .map(d -> {
                         OrderPositionResource r = new OrderPositionResource();

@@ -9,7 +9,7 @@ public record CustomerId(Integer value) {
         if (value == null) {
             throw new IllegalArgumentException("Customer id must not be null");
         }
-        if(value < 0) {
+        if (value < 0) {
             throw new IllegalArgumentException("Customer id must not be negative");
         }
     }

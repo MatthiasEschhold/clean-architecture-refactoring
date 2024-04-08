@@ -5,5 +5,6 @@ import de.arkem.clean.arc.refactoring.demo.next.level.garage.portal.customer.use
 
 public interface CreateCustomer {
     Customer create(CreateCustomerCommand command);
+
     Customer create(Customer customer);
 }

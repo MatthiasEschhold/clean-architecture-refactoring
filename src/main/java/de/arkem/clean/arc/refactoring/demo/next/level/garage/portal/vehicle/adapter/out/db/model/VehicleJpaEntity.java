@@ -7,7 +7,8 @@ import java.util.List;
 @Entity(name = "vehicle_tbl")
 public class VehicleJpaEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String vin;

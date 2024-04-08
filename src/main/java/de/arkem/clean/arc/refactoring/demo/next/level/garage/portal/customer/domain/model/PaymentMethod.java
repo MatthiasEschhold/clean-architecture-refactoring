@@ -5,7 +5,7 @@ public record PaymentMethod(PaymentMethodEnum paymentMethodEnum, String identifi
         if (identifier == null) {
             throw new IllegalArgumentException("payment method requires an identifier");
         }
-        if(paymentMethodEnum == null) {
+        if (paymentMethodEnum == null) {
             throw new IllegalArgumentException("payment method must not be null");
         }
     }
