@@ -1,6 +1,6 @@
 package de.arkem.clean.arc.refactoring.demo;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.CreateOrderRequest;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.OrderRequest;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataCrudRepository;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
@@ -31,10 +31,10 @@ public class LoadInitialDataApplicationListener implements ApplicationListener<A
     private void initApplicationTestData() {
         List<OrderDataDbo> orders = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-            createOrderRequest.setOrderData(createOrder(i));
-            createOrderRequest.setCustomerId("1234" + i);
-            orderDataService.createOrder(createOrderRequest);
+            OrderRequest orderRequest = new OrderRequest();
+            orderRequest.setOrderData(createOrder(i));
+            orderRequest.setCustomerId("1234" + i);
+            orderDataService.createOrder(orderRequest);
         }
         System.out.println("test data created");
     }

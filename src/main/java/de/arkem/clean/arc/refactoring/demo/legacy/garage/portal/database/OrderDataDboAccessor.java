@@ -12,7 +12,7 @@ public class OrderDataDboAccessor {
         this.orderCrudRepository = orderCrudRepository;
     }
 
-    public OrderDataDbo findOrder(int id) {
+    public OrderDataDbo findOrder(long id) {
         return orderCrudRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
     }
 

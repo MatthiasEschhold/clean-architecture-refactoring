@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Garage Portal</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-2" align="center">
+
+    <h3>Create Garage Order</h3>
+    <a th:href="@{/}" class="btn btn-primary btn-sm mb-3" >Garage Order Overview</a>
+    <form action="#" th:action="@{/updateOrder}" th:object="${orderRequest}" method="PUT">
+        <table>
+            <tr>
+                <td>EditorId:</td>
+                <td>
+                    <input type="text" th:field="*{orderData.editorId}" class="form-control mb-4 col-4">
+                </td>
+            </tr>
+            <tr>
+                <td>VehicleId:</td>
+                <td>
+                    <input type="text" th:field="*{orderData.vehicleId}" class="form-control mb-4 col-4">
+                </td>
+            </tr>
+            <tr>
+                <td>LicensePlate:</td>
+                <td>
+                    <input type="text" th:field="*{orderData.licensePlate}" class="form-control mb-4 col-4">
+                </td>
+            </tr>
+            <tr>
+                <td>Mileage:</td>
+                <td>
+                    <input type="text" th:field="*{orderData.mileage}" class="form-control mb-4 col-4">
+                </td>
+            </tr>
+            <tr>
+                <td>Customer Id:</td>
+                <td>
+                    <input type="text" th:field="*{customerId}" class="form-control mb-4 col-4">
+                </td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-info col-2">Update Order</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service;
 
-import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.CreateOrderRequest;
+import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller.OrderRequest;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDboAccessor;
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderPositionDataDbo;
@@ -19,9 +19,9 @@ public class OrderDataService {
         this.orderDataDboAccessor = orderDataDboAccessor;
     }
 
-    public OrderDataDbo createOrder(CreateOrderRequest createOrderRequest) {
-        CustomerResponse response = getCustomer(createOrderRequest.getCustomerId());
-        OrderDataDbo orderDataDbo = createOrderRequest.getOrderData();
+    public OrderDataDbo createOrder(OrderRequest orderRequest) {
+        CustomerResponse response = getCustomer(orderRequest.getCustomerId());
+        OrderDataDbo orderDataDbo = orderRequest.getOrderData();
         if (orderDataDbo.getLicensePlate() == null && orderDataDbo.getVehicleId() == null) {
             throw new RuntimeException("Order creation not possible, license plate or vehicle id required");
         }
@@ -39,7 +39,7 @@ public class OrderDataService {
         orderDataDbo.setStartDate(LocalDate.now().plusDays(1));
         orderDataDbo.setEndDate(LocalDate.now().plusDays(3));
         orderDataDbo.setCreationDate(LocalDate.now());
-        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + createOrderRequest.getCustomerId());
+        orderDataDbo.setOrderNumber(LocalDate.now() + "-" + orderRequest.getCustomerId());
         handleOrderPositions(orderDataDbo);
         return orderDataDboAccessor.saveOrder(orderDataDbo);
     }
@@ -63,11 +63,11 @@ public class OrderDataService {
         return customerResponse;
     }
 
-    public OrderDataDbo updateOrder(int orderNumber, String customerId, OrderPositionDataDbo... orderPositions) {
+    public OrderDataDbo updateOrder(long orderId, String customerId, List<OrderPositionDataDbo> orderPositions) {
         OrderDataDbo order = null;
         CustomerResponse customerResponse = customerService.getCustomer(customerId);
         try {
-            order = readOrder(orderNumber);
+            order = readOrder(orderId);
             if (customerResponse != null) {
                 order.setCustomerName(customerResponse.getCustomerName());
                 order.setLastName(customerResponse.getCustomerLastName());
@@ -76,8 +76,7 @@ public class OrderDataService {
                 order.setPostalCode(customerResponse.getPostalCode());
             }
             if (orderPositions != null) {
-                order.setOrderPositionDataDboList(List.of(orderPositions).stream().map(op -> OrderUtil.createOrderPositionDataDbo(op.getPositionDescription(), op.getQuantity()))
-                        .collect(Collectors.toList()));
+                order.setOrderPositionDataDboList(orderPositions);
             }
         } catch (Exception e) {
             throw new RuntimeException("Order update not possible, order not found");
@@ -90,8 +89,8 @@ public class OrderDataService {
         return order;
     }
 
-    public OrderDataDbo readOrder(int orderNumber) {
-        OrderDataDbo order = orderDataDboAccessor.findOrder(orderNumber);
+    public OrderDataDbo readOrder(long orderId) {
+        OrderDataDbo order = orderDataDboAccessor.findOrder(orderId);
         if (order == null) {
             throw new RuntimeException("Order not found");
         }

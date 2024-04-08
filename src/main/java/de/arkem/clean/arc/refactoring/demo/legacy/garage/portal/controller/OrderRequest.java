@@ -2,7 +2,7 @@ package de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.controller;
 
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDataDbo;
 
-public class CreateOrderRequest {
+public class OrderRequest {
     private OrderDataDbo orderData;
     private String customerId;
 

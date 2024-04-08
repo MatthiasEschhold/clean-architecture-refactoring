@@ -4,10 +4,7 @@ import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.database.OrderDa
 import de.arkem.clean.arc.refactoring.demo.legacy.garage.portal.service.OrderDataService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,15 +33,28 @@ public class OrderDataController {
 
     @GetMapping("/createOrder")
     public String createOrder(Model model) {
-        model.addAttribute("orderRequest", new CreateOrderRequest());
+        model.addAttribute("orderRequest", new OrderRequest());
         return "/createNewOrderForm";
     }
 
     @PostMapping("/createOrder")
-    public String createNewOrder(@ModelAttribute("orderRequest") CreateOrderRequest orderRequest) {
+    public String createNewOrder(@ModelAttribute("orderRequest") OrderRequest orderRequest) {
         OrderDataDbo orderData = orderDataService.createOrder(orderRequest);
         return "redirect:/showOrderDetails/" + orderData.getId();
     }
 
+    @GetMapping("/updateOrder")
+    public String updateOrder(Model model) {
+        model.addAttribute("orderRequest", new OrderRequest());
+        return "/updateOrderForm";
+    }
+
+    @PutMapping("/updateOrder")
+    public String updateOrder(@ModelAttribute("orderRequest") OrderRequest orderRequest) {
+        OrderDataDbo orderData = orderDataService.updateOrder(orderRequest.getOrderData().getId(),
+                orderRequest.getCustomerId(),
+                orderRequest.getOrderData().getOrderPositionDataDboList());
+        return "redirect:/showOrderDetails/" + orderData.getId();
+    }
 
 }
